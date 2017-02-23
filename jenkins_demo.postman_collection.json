@@ -1,0 +1,644 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PoC - Mo Postman&Jenkins",
+		"_postman_id": "335212b5-0da4-bf99-1f1b-6ca5533ade21",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "02_Authentication",
+			"description": "http://docs.movemberapi.apiary.io/#reference/authentication\n\nTest Cases:\n- Login using Username & Password\n- Login with Facebook token\n- Authenticate login details\n- Log out",
+			"item": [
+				{
+					"name": "2.11 : Member Login - User & Pass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									" ",
+									"if (data.memberId) {",
+									"  tests[\"Member ID found\"] = true;",
+									"  postman.setEnvironmentVariable(\"memberId\", data.memberId);",
+									"  postman.setEnvironmentVariable(\"authToken\", data.accessToken);",
+									"}",
+									"else {",
+									"  tests[\"Member ID found\"] = false;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"username\" : \"captain1AU@gustavo.mvmbr.com\",\n\"password\" : \"soporte123\",\n\"source\" : \"ios\"\n}"
+						},
+						"description": "Member Login, using Username and Password\n\nSince 2016: You can also pass in a `source` param, which we then log for each login, to help with reporting and data analysis in the future.  \n\nEg. `\"source\": \"android\"`, `\"source\": \"web\"`, `\"source\": \"ios\"`"
+					},
+					"response": [
+						{
+							"id": "f6dc216c-8b31-4919-9ef5-f38b7bc94cd7",
+							"name": "200 - authenticated",
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"_postman_previewtype": "html",
+							"header": [
+								{
+									"description": "",
+									"key": "Application-Server",
+									"name": "Application-Server",
+									"value": "i-5219f383"
+								},
+								{
+									"description": "",
+									"key": "Cache-Control",
+									"name": "Cache-Control",
+									"value": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+								},
+								{
+									"description": "",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "201"
+								},
+								{
+									"description": "",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"description": "",
+									"key": "Country",
+									"name": "Country",
+									"value": "AU"
+								},
+								{
+									"description": "",
+									"key": "Date",
+									"name": "Date",
+									"value": "Thu, 05 May 2016 05:55:14 GMT"
+								},
+								{
+									"description": "",
+									"key": "Expires",
+									"name": "Expires",
+									"value": "Thu, 19 Nov 1981 08:52:00 GMT"
+								},
+								{
+									"description": "",
+									"key": "Pragma",
+									"name": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"description": "",
+									"key": "Server",
+									"name": "Server",
+									"value": "nginx/1.8.1"
+								},
+								{
+									"description": "",
+									"key": "Via",
+									"name": "Via",
+									"value": "1.1 5c3fa4f870428cf056e16daa13ebfa18.cloudfront.net (CloudFront)"
+								},
+								{
+									"description": "",
+									"key": "X-Amz-Cf-Id",
+									"name": "X-Amz-Cf-Id",
+									"value": "oYvd-8HaS0JuE3WbQqPF9JZVYOqlIuvDztWej52Etr5tDaUuIVm4-g=="
+								},
+								{
+									"description": "",
+									"key": "X-Cache",
+									"name": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"description": "",
+									"key": "X-Powered-By",
+									"name": "X-Powered-By",
+									"value": "PHP/5.5.9-1ubuntu4.16"
+								}
+							],
+							"cookie": [],
+							"responseTime": "394",
+							"body": "{\"accessToken\":\"10303be0427870a7f331af930fd0d91aaf6\",\"memberId\":\"103\",\"id\":\"103\",\"loginType\":\"mov\",\"baseURL\":\"https:\\/\\/au.staging.movember.com\\/\",\"baseURLSecure\":\"https:\\/\\/au.staging.movember.com\\/\"}"
+						},
+						{
+							"id": "02cc3cb6-5db1-4fcb-89e7-753d87625740",
+							"name": "401 - Incorrect Password",
+							"status": "Authorization Required",
+							"code": 401,
+							"_postman_previewlanguage": "javascript",
+							"_postman_previewtype": "html",
+							"header": [
+								{
+									"description": "",
+									"key": "Application-Server",
+									"name": "Application-Server",
+									"value": "modev-dvmh-app-03"
+								},
+								{
+									"description": "",
+									"key": "Cache-Control",
+									"name": "Cache-Control",
+									"value": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+								},
+								{
+									"description": "",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "46"
+								},
+								{
+									"description": "",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"description": "",
+									"key": "Date",
+									"name": "Date",
+									"value": "Fri, 08 Apr 2016 05:21:20 GMT"
+								},
+								{
+									"description": "",
+									"key": "Expires",
+									"name": "Expires",
+									"value": "Thu, 19 Nov 1981 08:52:00 GMT"
+								},
+								{
+									"description": "",
+									"key": "Pragma",
+									"name": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"description": "",
+									"key": "Server",
+									"name": "Server",
+									"value": "nginx"
+								}
+							],
+							"cookie": [],
+							"responseTime": "86",
+							"body": "{\"error\":\"Authentication Failed\",\"status\":401}"
+						}
+					]
+				},
+				{
+					"name": "2.12 : Get Authetication Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"tests[\"Member ID Detected\"] = data.id === environment.memberId;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Test Authentication details"
+					},
+					"response": [
+						{
+							"id": "4a1678f1-31eb-43eb-a7e9-95aee57db665",
+							"name": "200",
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"_postman_previewtype": "html",
+							"header": [
+								{
+									"description": "",
+									"key": "Application-Server",
+									"name": "Application-Server",
+									"value": "modev-dvmh-app-03"
+								},
+								{
+									"description": "",
+									"key": "Cache-Control",
+									"name": "Cache-Control",
+									"value": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+								},
+								{
+									"description": "",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "147"
+								},
+								{
+									"description": "",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"description": "",
+									"key": "Date",
+									"name": "Date",
+									"value": "Fri, 08 Apr 2016 05:17:28 GMT"
+								},
+								{
+									"description": "",
+									"key": "Expires",
+									"name": "Expires",
+									"value": "Thu, 19 Nov 1981 08:52:00 GMT"
+								},
+								{
+									"description": "",
+									"key": "Pragma",
+									"name": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"description": "",
+									"key": "Server",
+									"name": "Server",
+									"value": "nginx"
+								}
+							],
+							"cookie": [],
+							"responseTime": "272",
+							"body": "{\"accessToken\":\"103bd29d2c394c2358f897e3ae14da73fad\",\"memberId\":\"103\",\"id\":\"103\",\"newNotifications\":6,\"cmsHash\":\"868f2a2d4e9ad739a414ea22040cbdd5\"}"
+						}
+					]
+				},
+				{
+					"name": "2.13 : Member - Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"if (data.result) {",
+									"    tests[\"Member Logged Out\"] = data.result === true;",
+									"}",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Logout active member"
+					},
+					"response": []
+				},
+				{
+					"name": "2.17 : Member - Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 401\"] = responseCode.code === 401;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									"if (data.status === 401) {",
+									"    tests[\"Error Message when the member is already Logged Out \"] = true;",
+									"}",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Logout active member"
+					},
+					"response": []
+				},
+				{
+					"name": "2.18 : Get Authetication Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Test Authentication details"
+					},
+					"response": []
+				},
+				{
+					"name": "Member Login - FB Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var data = JSON.parse(responseBody);",
+									" ",
+									"if (data.memberId) {",
+									"  tests[\"Member ID found\"] = true;",
+									"  postman.setEnvironmentVariable(\"memberId\", data.memberId);",
+									"  postman.setEnvironmentVariable(\"authToken\", data.accessToken);",
+									"}",
+									"else {",
+									"  tests[\"Member ID found\"] = false;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "https://api.{{env}}movember.com/{{version}}/auth",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"facebookAccessToken\": \"SomeReallyLongToken\",\n\"source\" : \"ios\"\n}"
+						},
+						"description": "Member Login, using a Facebook Token\n\n"
+					},
+					"response": [
+						{
+							"id": "a0f356d0-3f77-4b01-8aee-7ced7c0bf184",
+							"name": "200 - authenticated",
+							"originalRequest": {
+								"url": "https://api.{{env}}movember.com/{{version}}/auth",
+								"method": "POST",
+								"header": [
+									{
+										"description": "The mime type of this content",
+										"enabled": true,
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"username\" : \"mov@dm.ie.com.au\",\n\"password\" : \"jijiji\"\n}"
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"_postman_previewtype": "html",
+							"header": [
+								{
+									"description": "",
+									"key": "Application-Server",
+									"name": "Application-Server",
+									"value": "i-5219f383"
+								},
+								{
+									"description": "",
+									"key": "Cache-Control",
+									"name": "Cache-Control",
+									"value": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+								},
+								{
+									"description": "",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "201"
+								},
+								{
+									"description": "",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"description": "",
+									"key": "Country",
+									"name": "Country",
+									"value": "AU"
+								},
+								{
+									"description": "",
+									"key": "Date",
+									"name": "Date",
+									"value": "Thu, 05 May 2016 05:55:14 GMT"
+								},
+								{
+									"description": "",
+									"key": "Expires",
+									"name": "Expires",
+									"value": "Thu, 19 Nov 1981 08:52:00 GMT"
+								},
+								{
+									"description": "",
+									"key": "Pragma",
+									"name": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"description": "",
+									"key": "Server",
+									"name": "Server",
+									"value": "nginx/1.8.1"
+								},
+								{
+									"description": "",
+									"key": "Via",
+									"name": "Via",
+									"value": "1.1 5c3fa4f870428cf056e16daa13ebfa18.cloudfront.net (CloudFront)"
+								},
+								{
+									"description": "",
+									"key": "X-Amz-Cf-Id",
+									"name": "X-Amz-Cf-Id",
+									"value": "oYvd-8HaS0JuE3WbQqPF9JZVYOqlIuvDztWej52Etr5tDaUuIVm4-g=="
+								},
+								{
+									"description": "",
+									"key": "X-Cache",
+									"name": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"description": "",
+									"key": "X-Powered-By",
+									"name": "X-Powered-By",
+									"value": "PHP/5.5.9-1ubuntu4.16"
+								}
+							],
+							"cookie": [],
+							"responseTime": "394",
+							"body": "{\"accessToken\":\"10303be0427870a7f331af930fd0d91aaf6\",\"memberId\":\"103\",\"id\":\"103\",\"loginType\":\"mov\",\"baseURL\":\"https:\\/\\/au.staging.movember.com\\/\",\"baseURLSecure\":\"https:\\/\\/au.staging.movember.com\\/\"}"
+						},
+						{
+							"id": "dc719948-48cd-4ad2-ab72-151cf5235a1c",
+							"name": "401 - Incorrect Password",
+							"originalRequest": {
+								"url": "https://api.{{env}}movember.com/{{version}}/auth",
+								"method": "POST",
+								"header": [
+									{
+										"description": "The mime type of this content",
+										"enabled": true,
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"username\" : \"movs@dm.ie.com.au\",\n\"password\" : \"jijiji\"\n}"
+								}
+							},
+							"status": "Authorization Required",
+							"code": 401,
+							"_postman_previewlanguage": "javascript",
+							"_postman_previewtype": "html",
+							"header": [
+								{
+									"description": "",
+									"key": "Application-Server",
+									"name": "Application-Server",
+									"value": "modev-dvmh-app-03"
+								},
+								{
+									"description": "",
+									"key": "Cache-Control",
+									"name": "Cache-Control",
+									"value": "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+								},
+								{
+									"description": "",
+									"key": "Connection",
+									"name": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"description": "",
+									"key": "Content-Length",
+									"name": "Content-Length",
+									"value": "46"
+								},
+								{
+									"description": "",
+									"key": "Content-Type",
+									"name": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"description": "",
+									"key": "Date",
+									"name": "Date",
+									"value": "Fri, 08 Apr 2016 05:21:20 GMT"
+								},
+								{
+									"description": "",
+									"key": "Expires",
+									"name": "Expires",
+									"value": "Thu, 19 Nov 1981 08:52:00 GMT"
+								},
+								{
+									"description": "",
+									"key": "Pragma",
+									"name": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"description": "",
+									"key": "Server",
+									"name": "Server",
+									"value": "nginx"
+								}
+							],
+							"cookie": [],
+							"responseTime": "86",
+							"body": "{\"error\":\"Authentication Failed\",\"status\":401}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
